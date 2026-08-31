@@ -1,0 +1,9 @@
+# Bootstrap ownership. Expand to teams as the engineering organization grows.
+* @rotprods
+
+/SECURITY.md @rotprods
+/infra/ @rotprods
+/data/migrations/ @rotprods
+/contracts/ @rotprods
+/cos-graph-engine/ @rotprods
+/.github/workflows/ @rotprods
