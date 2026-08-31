@@ -1,0 +1,61 @@
+version: 2
+project: public-source-goverment
+dimensions:
+  L0_identity:
+    concerns: [accounts, actors, identity_assertions, pseudonymity, organizations]
+  L1_execution:
+    concerns: [commands, queries, jobs, workflows, idempotency]
+  L2_data_flow:
+    concerns: [write_path, events, outbox, ingestion, projections]
+  L3_dependency:
+    concerns: [crates, services, external_providers, schemas, licenses]
+  L4_temporal:
+    concerns: [policy_validity, process_windows, deadlines, decay, retention]
+  L5_authority:
+    concerns: [competence, institutional_authority, policy_approvals, legal_effect]
+  L6_capability:
+    concerns: [roles, actor_capabilities, publisher_qualification, process_eligibility]
+  L7_policy_security:
+    concerns: [authz, visibility, moderation, privacy, rate_limits, feature_flags]
+  L8_causality:
+    concerns: [ranking_reasons, routing_reasons, policy_reasons, decision_causes]
+  L9_evidence:
+    concerns: [citations, hashes, receipts, provenance, test_evidence]
+  L10_state:
+    concerns: [aggregate_state, state_machines, snapshots, migrations]
+  L11_projection:
+    concerns: [feed, search, vector, graph, analytics, public_audit]
+  L12_communication:
+    concerns: [notifications, official_responses, subscriptions, user_explanations]
+  L13_knowledge_ai:
+    concerns: [retrieval, embeddings, ai_artifacts, model_gateway, evals]
+  L14_observability:
+    concerns: [logs, metrics, traces, slo, correlation_ids]
+  L15_economics:
+    concerns: [infra_cost, model_cost, growth_cost, capacity, procurement]
+  L16_risk_failure:
+    concerns: [sybil, brigading, capture, outages, poisoning, data_leak, supply_chain]
+  L17_recovery:
+    concerns: [rollback, replay, backups, restore, projection_rebuild, disaster_recovery]
+  L18_learning_evaluation:
+    concerns: [experiments, golden_sets, ranking_eval, retrieval_eval, red_team]
+  L19_governance_release:
+    concerns: [adrs, checkpoints, release_manifests, policy_versions, approvals, handoff]
+session_protocol:
+  required_fields:
+    - session_id
+    - correlation_id
+    - workstream_id
+    - objective_id
+    - base_sha
+    - current_checkpoint
+    - observed_truth
+    - decisions
+    - changed_nodes
+    - changed_edges
+    - tests
+    - evidence
+    - risks
+    - resulting_state
+    - next_action
+material_change_rule: "No material session ends without durable state/handoff/evidence."
