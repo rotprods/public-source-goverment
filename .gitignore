@@ -1,0 +1,50 @@
+# secrets/local
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Rust
+/target/
+**/*.rs.bk
+
+# Node
+node_modules/
+.pnpm-store/
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Python research
+.venv/
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# local tooling/evidence outputs
+.playwright/
+.playwright-cli/
+output/
+tmp/
+.cache/
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# infra
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# logs
+*.log
+
+# local graph generated caches
+graphify-out/cache/
