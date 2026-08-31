@@ -48,6 +48,9 @@ mod tests {
 
     #[test]
     fn support_and_ballot_are_distinct_domain_values() {
-        assert_ne!(ParticipationKind::Support, ParticipationKind::AdvisoryBallot);
+        assert_ne!(
+            ParticipationKind::Support,
+            ParticipationKind::AdvisoryBallot
+        );
     }
 }
