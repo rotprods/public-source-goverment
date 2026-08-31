@@ -3,7 +3,7 @@ WORKDIR /workspace
 COPY Cargo.toml rust-toolchain.toml ./
 COPY crates ./crates
 COPY services ./services
-RUN cargo build --locked --release -p civic-api
+RUN cargo build --release -p civic-api
 
 FROM debian:bookworm-slim AS runtime
 RUN apt-get update \
