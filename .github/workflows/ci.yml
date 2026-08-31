@@ -1,0 +1,131 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+      - "bootstrap/**"
+      - "feature/**"
+      - "fix/**"
+  pull_request:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lockfiles:
+    name: bootstrap lockfiles
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.98.0
+          components: rustfmt,clippy
+      - name: Generate Rust lockfile
+        run: cargo generate-lockfile
+      - name: Generate pnpm lockfile
+        run: pnpm install --lockfile-only --no-frozen-lockfile
+      - name: Commit lockfiles on bootstrap branches
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/bootstrap/')
+        run: |
+          if git diff --quiet -- Cargo.lock pnpm-lock.yaml && git ls-files --error-unmatch Cargo.lock pnpm-lock.yaml >/dev/null 2>&1; then
+            echo "Lockfiles already current"
+            exit 0
+          fi
+          git config user.name "civic-bootstrap-bot"
+          git config user.email "civic-bootstrap-bot@users.noreply.github.com"
+          git add Cargo.lock pnpm-lock.yaml
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "chore: lock bootstrap dependencies"
+          git push origin HEAD:${GITHUB_REF_NAME}
+
+  rust:
+    name: Rust compile and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.98.0
+          components: rustfmt,clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+      - run: cargo test --workspace
+      - run: cargo build --workspace --release
+
+  web:
+    name: Web typecheck and production build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm -r typecheck
+      - run: pnpm --filter @civic/web build
+
+  security:
+    name: Supply chain and secrets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.98.0
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-audit,cargo-deny
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: cargo generate-lockfile
+      - run: cargo audit
+      - run: cargo deny check
+      - run: pnpm install --lockfile-only --no-frozen-lockfile
+      - run: pnpm audit --audit-level high
+      - name: Secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    name: Container build smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build PostgreSQL/PostGIS/pgvector dev image
+        run: docker build -f infra/docker/postgres/Dockerfile -t civic-postgres:ci .
+      - name: Build Rust API image
+        run: docker build -f infra/docker/api/Dockerfile -t civic-api:ci .
