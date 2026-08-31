@@ -1,0 +1,17 @@
+{
+  "name": "public-source-goverment",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @civic/web dev",
+    "build:web": "pnpm --filter @civic/web build",
+    "typecheck": "pnpm -r typecheck",
+    "test:web": "pnpm -r test",
+    "check:rust": "cargo fmt --all -- --check && cargo clippy --workspace --all-targets --all-features -- -D warnings && cargo test --workspace && cargo build --workspace --release",
+    "check": "pnpm typecheck && pnpm build:web && pnpm check:rust"
+  }
+}
