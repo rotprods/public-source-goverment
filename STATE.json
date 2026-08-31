@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "project": "public-source-goverment",
+  "public_product_name": null,
+  "phase": "BOOTSTRAP_ARCHITECTURE_LOCK",
+  "branch": "bootstrap/empezarproyecto-v1",
+  "north_star": "Qualified Civic Loop Completion",
+  "architecture": {
+    "style": "rust-first modular monolith with durable workers and rebuildable projections",
+    "authoritative_db": "PostgreSQL + PostGIS + pgvector",
+    "frontend": "Next.js + React + TypeScript",
+    "backend": "Rust + Axum + Tokio + SQLx",
+    "analytics_target": "PostgreSQL initially; ClickHouse when scale gate is met",
+    "vector_target": "pgvector initially; Qdrant evaluated only when filtered vector scale justifies separation",
+    "workflow_target": "WorkflowEngine port; Postgres worker baseline; Temporal Rust vs Restate Rust spike before lock"
+  },
+  "current_checkpoint": "CP00",
+  "checkpoint_status": {
+    "CP00": "IN_PROGRESS",
+    "CP01": "PENDING",
+    "CP02": "PENDING"
+  },
+  "p0_decisions": [
+    "public product naming",
+    "final governance/operator authority",
+    "formal effect of reputation/weighted participation",
+    "unserved-demand activation policy",
+    "social/civic priority formula",
+    "identity assurance requirements by process",
+    "workflow engine after benchmark spike",
+    "authorization policy engine after Cedar-vs-OPA spike"
+  ],
+  "research_inputs": [
+    "rotprods/movimurcia",
+    "xai-org/x-algorithm",
+    "twitter/the-algorithm",
+    "reddit-archive/reddit",
+    "pgvector/pgvector",
+    "Qdrant",
+    "ActivityPub",
+    "AT Protocol"
+  ],
+  "last_material_event": "bootstrap branch created and canonical foundation initialized",
+  "next_action": "complete architecture/research artifacts, repository configs, canonical skills, buildable skeleton and open review PR"
+}
