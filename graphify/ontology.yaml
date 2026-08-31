@@ -1,0 +1,103 @@
+version: 1
+node_types:
+  project:
+    - Project
+    - Goal
+    - NorthStarMetric
+    - Checkpoint
+    - Decision
+    - Risk
+    - Evidence
+    - Workstream
+    - Release
+  civic:
+    - Actor
+    - ActorType
+    - Organization
+    - Capability
+    - Territory
+    - CivicTopic
+    - CompetenceNode
+    - Need
+    - NeedCluster
+    - EvidenceDocument
+    - Claim
+    - Argument
+    - TechnicalProposal
+    - ProposalVersion
+    - CivicProcess
+    - EligibilitySnapshot
+    - Participation
+    - InstitutionalCase
+    - OfficialResponse
+    - Commitment
+    - Milestone
+    - Outcome
+    - ModerationCase
+    - Appeal
+  engineering:
+    - App
+    - Service
+    - Crate
+    - Module
+    - Database
+    - Table
+    - Projection
+    - API
+    - Command
+    - Query
+    - DomainEvent
+    - Workflow
+    - Policy
+    - Model
+    - Dataset
+    - SearchIndex
+    - VectorIndex
+    - Test
+    - SLO
+edge_types:
+  - REQUIRES
+  - OWNS
+  - DEPENDS_ON
+  - AUTHORIZES
+  - PROVES
+  - SUPPORTED_BY
+  - BLOCKED_BY
+  - SUPERSEDES
+  - FREEZES
+  - MUTATES
+  - EMITS
+  - PROJECTS_TO
+  - ROUTES_TO
+  - CONCERNS
+  - CLUSTERED_WITH
+  - CITES
+  - SUPPORTS
+  - OPPOSES
+  - ADDRESSED_BY
+  - EVALUATES
+  - RESPONDS_TO
+  - COMMITS_TO
+  - PRODUCES
+  - GENERATED_BY
+  - INDEXES
+  - OBSERVES
+  - RECOVERS
+hyperedges:
+  - name: CompetenceRoutingDecision
+    participants: [Need, CivicTopic, Territory, CompetenceNode, Policy, Evidence]
+  - name: RankingDecision
+    participants: [Actor, Policy, Dataset, Model, Projection]
+  - name: CivicDecision
+    participants: [CivicProcess, ProposalVersion, EligibilitySnapshot, Participation, Policy]
+  - name: InstitutionalCommitment
+    participants: [OfficialResponse, Commitment, Territory, Policy, Evidence]
+  - name: AITransformation
+    participants: [Model, Dataset, Evidence, Projection]
+required_edge_metadata:
+  - valid_from
+  - valid_until
+  - source_kind
+  - source_ref
+  - policy_version
+  - created_at
