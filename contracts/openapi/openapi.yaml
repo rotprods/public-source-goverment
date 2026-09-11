@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: Civic Infrastructure API
+  version: 0.1.0
+  description: >-
+    Canonical executable API contract. This file documents only runtime that
+    actually exists on the active bootstrap branch; planned endpoints belong in
+    explicit proposal/draft contracts until implemented and tested.
+servers:
+  - url: http://localhost:8080
+paths:
+  /healthz:
+    get:
+      operationId: getHealth
+      summary: Liveness health probe
+      tags: [system]
+      responses:
+        "200":
+          description: Service is alive.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required: [status, service, architecture]
+      properties:
+        status:
+          type: string
+          const: ok
+        service:
+          type: string
+          const: civic-api
+        architecture:
+          type: string
+          const: rust-first
