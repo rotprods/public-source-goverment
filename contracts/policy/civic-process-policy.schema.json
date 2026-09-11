@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://public-source-goverment.local/contracts/policy/civic-process-policy.schema.json",
+  "title": "CivicProcessPolicySnapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "process_template_id",
+    "process_template_version",
+    "legal_effect",
+    "eligibility_policy_ref",
+    "identity_assurance",
+    "decision_method",
+    "moderation_policy_ref",
+    "competence_registry_version",
+    "feature_flags"
+  ],
+  "properties": {
+    "process_template_id": { "type": "string", "minLength": 1 },
+    "process_template_version": { "type": "string", "minLength": 1 },
+    "legal_effect": {
+      "type": "string",
+      "enum": [
+        "INFORMATIVE",
+        "SIGNAL",
+        "ADVISORY",
+        "ADMINISTRATIVE_INPUT",
+        "FORMAL_CONSULTATION",
+        "INTERNAL_BINDING",
+        "REGULATED_PUBLIC_PROCESS"
+      ]
+    },
+    "eligibility_policy_ref": { "$ref": "#/$defs/policyRef" },
+    "identity_assurance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authentication", "unique_person", "residency", "age", "professional_credential"],
+      "properties": {
+        "authentication": { "type": "string", "enum": ["NONE", "SESSION", "PASSKEY_OR_OIDC", "HIGH_ASSURANCE"] },
+        "unique_person": { "type": "boolean" },
+        "residency": { "type": "string", "enum": ["NOT_REQUIRED", "TERRITORY_ASSERTION", "HIGH_ASSURANCE_TERRITORY_ASSERTION"] },
+        "age": { "type": "string", "enum": ["NOT_REQUIRED", "MINIMUM_AGE_ASSERTION"] },
+        "professional_credential": { "type": "string", "enum": ["NOT_REQUIRED", "REQUIRED_FOR_ROLE", "REQUIRED"] }
+      }
+    },
+    "decision_method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "version"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "SUPPORT_SIGNAL",
+            "PRIORITIZATION",
+            "ADVISORY_BALLOT",
+            "EXPERT_ASSESSMENT",
+            "PARTICIPATORY_BUDGETING",
+            "EXTERNAL_FORMAL_PROCESS"
+          ]
+        },
+        "version": { "type": "string", "minLength": 1 },
+        "parameters": { "type": "object" }
+      }
+    },
+    "threshold_policy_ref": { "anyOf": [{ "$ref": "#/$defs/policyRef" }, { "type": "null" }] },
+    "ranking_policy_ref": { "anyOf": [{ "$ref": "#/$defs/policyRef" }, { "type": "null" }] },
+    "moderation_policy_ref": { "$ref": "#/$defs/policyRef" },
+    "competence_registry_version": { "type": "string", "minLength": 1 },
+    "feature_flags": {
+      "type": "object",
+      "additionalProperties": { "type": ["boolean", "string", "number", "null"] }
+    }
+  },
+  "$defs": {
+    "policyRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_type", "policy_version", "body_sha256"],
+      "properties": {
+        "policy_type": { "type": "string", "minLength": 1 },
+        "policy_version": { "type": "string", "minLength": 1 },
+        "body_sha256": { "type": "string", "minLength": 32 }
+      }
+    }
+  }
+}

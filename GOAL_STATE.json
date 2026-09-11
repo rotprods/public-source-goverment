@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "target": "PRODUCTION_CIVIC_INFRASTRUCTURE_V1",
+  "required_capabilities": [
+    "plain-language civic intake",
+    "territory and competence routing",
+    "hybrid duplicate and related-item retrieval",
+    "structured evidence claims and arguments",
+    "versioned technical proposals",
+    "configurable civic process engine",
+    "eligibility snapshots and participation receipts",
+    "explainable civic discovery and ranking",
+    "institutional triage and official responses",
+    "commitment milestone and outcome tracking",
+    "moderation and appeals",
+    "AI librarian with provenance",
+    "public audit explorer",
+    "real-time product and civic analytics",
+    "reproducible policy and model versioning",
+    "secure sovereign-capable deployment"
+  ],
+  "required_quality_gates": [
+    "compiler/typecheck",
+    "unit/integration/contract tests",
+    "production build",
+    "E2E browser validation",
+    "security and supply-chain checks",
+    "authz regression",
+    "replay/idempotency validation",
+    "retrieval/ranking offline evaluation",
+    "accessibility",
+    "observability/SLO smoke",
+    "backup/restore"
+  ],
+  "north_star": "Qualified Civic Loop Completion",
+  "target_users_phase_1": 10000,
+  "target_users_phase_2": 100000,
+  "formal_regulated_ballot_in_v1": false
+}

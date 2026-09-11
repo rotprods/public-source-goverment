@@ -1,0 +1,11 @@
+target/
+services/
+crates/
+data/
+ml/
+infra/
+docs/
+graphify/
+cos-graph-engine/
+.env*
+!.env.example

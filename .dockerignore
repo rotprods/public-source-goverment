@@ -1,0 +1,15 @@
+.git
+.github
+node_modules
+.pnpm-store
+.next
+target
+coverage
+output
+tmp
+.env
+.env.*
+!.env.example
+*.log
+docs/evidence
+ml/notebooks
