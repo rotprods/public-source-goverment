@@ -1,34 +1,66 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "project": "public-source-goverment",
   "public_product_name": null,
-  "phase": "BOOTSTRAP_ARCHITECTURE_LOCK",
+  "phase": "PRODUCT_CONSTITUTION_AND_ARCHITECTURE_SPIKES",
   "branch": "bootstrap/empezarproyecto-v1",
   "north_star": "Qualified Civic Loop Completion",
   "architecture": {
-    "style": "rust-first modular monolith with durable workers and rebuildable projections",
+    "style": "rust-first modular monolith with transactional outbox, durable workers and rebuildable projections",
     "authoritative_db": "PostgreSQL + PostGIS + pgvector",
     "frontend": "Next.js + React + TypeScript",
-    "backend": "Rust + Axum + Tokio + SQLx",
-    "analytics_target": "PostgreSQL initially; ClickHouse when scale gate is met",
-    "vector_target": "pgvector initially; Qdrant evaluated only when filtered vector scale justifies separation",
-    "workflow_target": "WorkflowEngine port; Postgres worker baseline; Temporal Rust vs Restate Rust spike before lock"
+    "backend": "Rust + Axum + Tokio; SQLx enters with persistence slice",
+    "analytics_target": "PostgreSQL initially; ClickHouse only after measured scale gate",
+    "vector_target": "pgvector first; Qdrant only after representative filtered-ANN benchmark",
+    "workflow_target": "WorkflowEngine port; Postgres worker baseline; Temporal Rust vs Restate Rust benchmark before lock",
+    "recommender_target": "X/Twitter-style staged candidate pipeline with civic-utility objective, transparent policy scoring and constrained diversity"
   },
-  "current_checkpoint": "CP00",
+  "current_checkpoint": "CP01",
   "checkpoint_status": {
-    "CP00": "IN_PROGRESS",
-    "CP01": "PENDING",
-    "CP02": "PENDING"
+    "CP00": "PASS_ON_BRANCH_PENDING_REVIEW_MERGE",
+    "CP01": "IN_PROGRESS",
+    "CP02": "PENDING",
+    "CP03": "PENDING"
   },
+  "verification": {
+    "verified_code_head": "4c32f5deb0e999e709265d8b63e61dd0bfda5dd6",
+    "ci_run_id": 34600057502,
+    "ci_run_number": 43,
+    "all_ci_jobs_success": true,
+    "evidence": "docs/evidence/2026-09-11/CP00_BOOTSTRAP_EVIDENCE.md"
+  },
+  "implemented_foundation": [
+    "canonical agent/project operating contract",
+    "empezarproyecto canonical bootstrap skill",
+    "autoprompting execution compiler and master metaprompt",
+    "North Star / goals / checkpoints / machine-readable state",
+    "Product Constitution draft and P0 decision register",
+    "Rust workspace with domain/search/ranking/API crates",
+    "project-native Reciprocal Rank Fusion",
+    "project-native Wilson lower-bound quality primitive",
+    "transparent policy-driven civic scorer",
+    "visibility decision separated from ranking score",
+    "truthful OpenAPI bootstrap contract",
+    "domain-event and civic-policy JSON schemas",
+    "PostgreSQL/PostGIS/pgvector bootstrap schema",
+    "transactional outbox/event foundation",
+    "Docker development infrastructure",
+    "Next.js bootstrap citizen shell",
+    "threat model and privacy/data-governance architecture",
+    "source/license provenance registry",
+    "graphify ontology and COS Graph Engine V2 20D schema",
+    "frozen-lockfile compiler/build/test/security/container CI"
+  ],
   "p0_decisions": [
     "public product naming",
     "final governance/operator authority",
     "formal effect of reputation/weighted participation",
     "unserved-demand activation policy",
-    "social/civic priority formula",
+    "civic-priority methodology",
     "identity assurance requirements by process",
-    "workflow engine after benchmark spike",
-    "authorization policy engine after Cedar-vs-OPA spike"
+    "workflow engine after Postgres vs Temporal Rust vs Restate spike",
+    "authorization policy engine after Cedar vs OPA spike",
+    "outbound software license"
   ],
   "research_inputs": [
     "rotprods/movimurcia",
@@ -37,9 +69,12 @@
     "reddit-archive/reddit",
     "pgvector/pgvector",
     "Qdrant",
+    "ClickHouse",
+    "Temporal Rust SDK",
+    "Restate Rust SDK",
     "ActivityPub",
     "AT Protocol"
   ],
-  "last_material_event": "bootstrap branch created and canonical foundation initialized",
-  "next_action": "complete architecture/research artifacts, repository configs, canonical skills, buildable skeleton and open review PR"
+  "last_material_event": "CP00 executable foundation verified green in CI run 34600057502; bootstrap evidence sealed; project advanced to CP01",
+  "next_action": "open bootstrap review PR, close pilot-critical Product Constitution/P0 decisions, then execute CP02 workflow/authz/vector benchmark spikes before the first real civic vertical slice"
 }
