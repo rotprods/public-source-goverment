@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://public-source-goverment.local/contracts/policy/ranking-policy.schema.json",
+  "title": "CivicRankingPolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policy_id",
+    "version",
+    "status",
+    "objective",
+    "weights",
+    "penalties",
+    "diversity",
+    "explanation",
+    "approved_by",
+    "effective_from"
+  ],
+  "properties": {
+    "policy_id": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "status": { "type": "string", "enum": ["DRAFT", "APPROVED", "ACTIVE", "SUPERSEDED", "REVOKED"] },
+    "objective": { "const": "QUALIFIED_CIVIC_LOOP_COMPLETION" },
+    "weights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "territorial_relevance",
+        "explicit_interest",
+        "semantic_relevance",
+        "civic_priority",
+        "unresolved_importance",
+        "evidence_quality",
+        "deliberative_need",
+        "institutional_urgency",
+        "freshness",
+        "exploration"
+      ],
+      "properties": {
+        "territorial_relevance": { "$ref": "#/$defs/nonNegativeFinite" },
+        "explicit_interest": { "$ref": "#/$defs/nonNegativeFinite" },
+        "semantic_relevance": { "$ref": "#/$defs/nonNegativeFinite" },
+        "civic_priority": { "$ref": "#/$defs/nonNegativeFinite" },
+        "unresolved_importance": { "$ref": "#/$defs/nonNegativeFinite" },
+        "evidence_quality": { "$ref": "#/$defs/nonNegativeFinite" },
+        "deliberative_need": { "$ref": "#/$defs/nonNegativeFinite" },
+        "institutional_urgency": { "$ref": "#/$defs/nonNegativeFinite" },
+        "freshness": { "$ref": "#/$defs/nonNegativeFinite" },
+        "exploration": { "$ref": "#/$defs/nonNegativeFinite" }
+      }
+    },
+    "penalties": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manipulation_risk", "fatigue", "duplicate_probability"],
+      "properties": {
+        "manipulation_risk": { "$ref": "#/$defs/nonNegativeFinite" },
+        "fatigue": { "$ref": "#/$defs/nonNegativeFinite" },
+        "duplicate_probability": { "$ref": "#/$defs/nonNegativeFinite" }
+      }
+    },
+    "diversity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_same_actor_in_window", "window_size", "topic_concentration_limit"],
+      "properties": {
+        "max_same_actor_in_window": { "type": "integer", "minimum": 1 },
+        "window_size": { "type": "integer", "minimum": 1 },
+        "topic_concentration_limit": { "type": "number", "minimum": 0, "maximum": 1 },
+        "exploration_budget": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "explanation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "max_reasons"],
+      "properties": {
+        "required": { "const": true },
+        "max_reasons": { "type": "integer", "minimum": 1, "maximum": 10 }
+      }
+    },
+    "approved_by": { "type": "string", "minLength": 1 },
+    "effective_from": { "type": "string", "format": "date-time" },
+    "effective_until": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "$defs": {
+    "nonNegativeFinite": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1000000
+    }
+  }
+}
