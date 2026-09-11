@@ -11,7 +11,8 @@
     "build:web": "pnpm --filter @civic/web build",
     "typecheck": "pnpm -r typecheck",
     "test:web": "pnpm -r test",
+    "check:contracts": "node scripts/check-contracts.mjs",
     "check:rust": "cargo fmt --all -- --check && cargo clippy --workspace --all-targets --all-features -- -D warnings && cargo test --workspace && cargo build --workspace --release",
-    "check": "pnpm typecheck && pnpm build:web && pnpm check:rust"
+    "check": "pnpm check:contracts && pnpm typecheck && pnpm build:web && pnpm check:rust"
   }
 }
