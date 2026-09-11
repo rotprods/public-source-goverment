@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://public-source-goverment.local/contracts/events/domain-event.schema.json",
+  "title": "DomainEventEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "aggregate_type",
+    "aggregate_id",
+    "aggregate_version",
+    "event_type",
+    "schema_version",
+    "correlation_id",
+    "policy_refs",
+    "privacy_class",
+    "occurred_at",
+    "payload"
+  ],
+  "properties": {
+    "event_id": { "type": "string", "format": "uuid" },
+    "aggregate_type": { "type": "string", "minLength": 1 },
+    "aggregate_id": { "type": "string", "format": "uuid" },
+    "aggregate_version": { "type": "integer", "minimum": 1 },
+    "event_type": { "type": "string", "minLength": 1 },
+    "schema_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "actor_ref": { "type": ["string", "null"], "format": "uuid" },
+    "correlation_id": { "type": "string", "format": "uuid" },
+    "causation_id": { "type": ["string", "null"], "format": "uuid" },
+    "policy_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["policy_type", "policy_version"],
+        "properties": {
+          "policy_type": { "type": "string", "minLength": 1 },
+          "policy_version": { "type": "string", "minLength": 1 },
+          "body_sha256": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "privacy_class": {
+      "type": "string",
+      "enum": ["PUBLIC", "INTERNAL", "SENSITIVE", "SECURITY_AUDIT"]
+    },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "payload": { "type": "object" }
+  }
+}
