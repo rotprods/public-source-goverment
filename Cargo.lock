@@ -117,6 +117,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "civic-policy"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "uuid",
+]
+
+[[package]]
 name = "civic-ranking"
 version = "0.1.0"
 dependencies = [
