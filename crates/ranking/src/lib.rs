@@ -176,7 +176,11 @@ pub fn score_candidate(
             policy.weights.institutional_urgency,
         ),
         ("freshness", features.freshness, policy.weights.freshness),
-        ("exploration", features.exploration, policy.weights.exploration),
+        (
+            "exploration",
+            features.exploration,
+            policy.weights.exploration,
+        ),
     ];
 
     let penalty_terms = [
@@ -275,7 +279,11 @@ mod tests {
     #[test]
     fn explanation_components_reconstruct_total_score() {
         let score = score_candidate(&policy(), features()).expect("valid score");
-        let reconstructed: f64 = score.components.iter().map(|part| part.weighted_value).sum();
+        let reconstructed: f64 = score
+            .components
+            .iter()
+            .map(|part| part.weighted_value)
+            .sum();
 
         assert!((reconstructed - score.total_score).abs() < 1e-12);
     }
