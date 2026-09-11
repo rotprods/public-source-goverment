@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.1.1",
   "project": "public-source-goverment",
   "public_product_name": null,
   "phase": "PRODUCT_CONSTITUTION_AND_ARCHITECTURE_SPIKES",
@@ -21,6 +21,15 @@
     "CP01": "IN_PROGRESS",
     "CP02": "PENDING",
     "CP03": "PENDING"
+  },
+  "review": {
+    "pull_request": 1,
+    "url": "https://github.com/rotprods/public-source-goverment/pull/1",
+    "base": "main",
+    "head": "bootstrap/empezarproyecto-v1",
+    "draft": true,
+    "merge_strategy_recommended": "squash",
+    "reason": "CP00 foundation is reviewable as one coherent baseline while CP01 policy decisions remain explicitly open"
   },
   "verification": {
     "verified_code_head": "4c32f5deb0e999e709265d8b63e61dd0bfda5dd6",
@@ -75,6 +84,6 @@
     "ActivityPub",
     "AT Protocol"
   ],
-  "last_material_event": "CP00 executable foundation verified green in CI run 34600057502; bootstrap evidence sealed; project advanced to CP01",
-  "next_action": "open bootstrap review PR, close pilot-critical Product Constitution/P0 decisions, then execute CP02 workflow/authz/vector benchmark spikes before the first real civic vertical slice"
+  "last_material_event": "Draft PR #1 opened for CP00 review after executable foundation verification; project remains in CP01 Product Constitution phase",
+  "next_action": "review PR #1 and keep it draft until current-head PR CI is green; close pilot-critical Product Constitution/P0 decisions; execute CP02 workflow/authz/vector benchmark spikes before the first real civic vertical slice"
 }
