@@ -10,7 +10,7 @@ on:
   pull_request:
 
 permissions:
-  contents: write
+  contents: read
   pull-requests: read
 
 concurrency:
@@ -19,12 +19,10 @@ concurrency:
 
 jobs:
   lockfiles:
-    name: bootstrap lockfiles
+    name: Lockfile integrity
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: pnpm/action-setup@v4
         with:
           version: 11.7.0
@@ -35,23 +33,10 @@ jobs:
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: 1.98.0
-          components: rustfmt,clippy
-      - name: Generate Rust lockfile
-        run: cargo generate-lockfile
-      - name: Generate pnpm lockfile
-        run: pnpm install --lockfile-only --no-frozen-lockfile
-      - name: Commit lockfiles on bootstrap branches
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/bootstrap/')
-        run: |
-          git config user.name "civic-bootstrap-bot"
-          git config user.email "civic-bootstrap-bot@users.noreply.github.com"
-          git add Cargo.lock pnpm-lock.yaml
-          if git diff --cached --quiet; then
-            echo "Lockfiles already current"
-            exit 0
-          fi
-          git commit -m "chore: lock bootstrap dependencies"
-          git push origin HEAD:${GITHUB_REF_NAME}
+      - name: Verify Rust lockfile
+        run: cargo metadata --locked --no-deps --format-version 1 >/dev/null
+      - name: Verify pnpm lockfile
+        run: pnpm install --lockfile-only --frozen-lockfile
 
   contracts:
     name: Contract and truth sanity
@@ -74,9 +59,9 @@ jobs:
           components: rustfmt,clippy
       - uses: Swatinem/rust-cache@v2
       - run: cargo fmt --all -- --check
-      - run: cargo clippy --workspace --all-targets --all-features -- -D warnings
-      - run: cargo test --workspace
-      - run: cargo build --workspace --release
+      - run: cargo clippy --locked --workspace --all-targets --all-features -- -D warnings
+      - run: cargo test --locked --workspace
+      - run: cargo build --locked --workspace --release
 
   web:
     name: Web typecheck and production build
@@ -90,7 +75,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm install --frozen-lockfile
       - run: pnpm -r typecheck
       - run: pnpm --filter @civic/web build
 
@@ -114,10 +99,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: cargo generate-lockfile
+      - run: cargo metadata --locked --no-deps --format-version 1 >/dev/null
       - run: cargo audit
       - run: cargo deny check
-      - run: pnpm install --lockfile-only --no-frozen-lockfile
+      - run: pnpm install --lockfile-only --frozen-lockfile
       - run: pnpm audit --audit-level high
       - name: Secret scan
         uses: gitleaks/gitleaks-action@v2
