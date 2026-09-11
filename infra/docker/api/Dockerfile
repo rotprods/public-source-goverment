@@ -1,9 +1,9 @@
 FROM rust:1.98-bookworm AS builder
 WORKDIR /workspace
-COPY Cargo.toml rust-toolchain.toml ./
+COPY Cargo.toml Cargo.lock rust-toolchain.toml ./
 COPY crates ./crates
 COPY services ./services
-RUN cargo build --release -p civic-api
+RUN cargo build --locked --release -p civic-api
 
 FROM debian:bookworm-slim AS runtime
 RUN apt-get update \
