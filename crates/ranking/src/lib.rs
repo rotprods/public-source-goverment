@@ -1,5 +1,7 @@
 #![forbid(unsafe_code)]
 
+pub mod confidence;
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
