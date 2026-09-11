@@ -12,12 +12,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .json()
         .init();
 
-    let app = Router::new().route("/healthz", get(health));
+    let app = build_router();
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     let listener = tokio::net::TcpListener::bind(addr).await?;
     info!(%addr, "civic api listening");
     axum::serve(listener, app).await?;
     Ok(())
+}
+
+fn build_router() -> Router {
+    Router::new().route("/healthz", get(health))
 }
 
 async fn health() -> Json<Value> {
@@ -26,4 +30,18 @@ async fn health() -> Json<Value> {
         "service": "civic-api",
         "architecture": "rust-first"
     }))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn health_contract_is_stable() {
+        let payload = health().await.0;
+
+        assert_eq!(payload["status"], "ok");
+        assert_eq!(payload["service"], "civic-api");
+        assert_eq!(payload["architecture"], "rust-first");
+    }
 }
