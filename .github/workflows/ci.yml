@@ -53,6 +53,16 @@ jobs:
           git commit -m "chore: lock bootstrap dependencies"
           git push origin HEAD:${GITHUB_REF_NAME}
 
+  contracts:
+    name: Contract and truth sanity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/check-contracts.mjs
+
   rust:
     name: Rust compile and tests
     runs-on: ubuntu-latest
