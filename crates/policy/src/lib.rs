@@ -258,7 +258,11 @@ mod tests {
         }
     }
 
-    fn assignment(actor_id: Uuid, capability: &str, scope: CapabilityScope) -> CapabilityAssignment {
+    fn assignment(
+        actor_id: Uuid,
+        capability: &str,
+        scope: CapabilityScope,
+    ) -> CapabilityAssignment {
         CapabilityAssignment {
             assignment_id: Uuid::now_v7(),
             subject_actor_id: actor_id,
@@ -278,10 +282,7 @@ mod tests {
         let decision = engine.authorize(&request(actor, "need.publish"));
 
         assert_eq!(decision.decision, AuthorizationDecisionKind::Deny);
-        assert_eq!(
-            decision.reason_codes,
-            vec!["NO_MATCHING_ACTIVE_CAPABILITY"]
-        );
+        assert_eq!(decision.reason_codes, vec!["NO_MATCHING_ACTIVE_CAPABILITY"]);
     }
 
     #[test]
@@ -291,11 +292,8 @@ mod tests {
         let other_territory = Uuid::now_v7();
         let mut scope = CapabilityScope::scoped();
         scope.territory_id = Some(allowed_territory);
-        let engine = StaticPolicyEngine::new(vec![assignment(
-            actor,
-            "response.publish_official",
-            scope,
-        )]);
+        let engine =
+            StaticPolicyEngine::new(vec![assignment(actor, "response.publish_official", scope)]);
 
         let mut allowed = request(actor, "response.publish_official");
         allowed.territory_id = Some(allowed_territory);
